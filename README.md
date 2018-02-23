@@ -29,7 +29,7 @@ Let's see this in action.
 # A Caution about PWM Pins
 Not every Digital GPIO pin on the Up2 board is able to use PWM. Be sure that you are on **D3** and not a different PIN.
 
-## PWM using the Arduino API
+## PWM using the MRAA API
 Create a new project
 ```c
 // Setup instructions
@@ -61,6 +61,27 @@ void setup() {
 void loop() {
   mraa_pwm_write(pwm, mraa_aio_read(aio)/1023.0);
   //DebugSerial.println(mraa_get_version());
+  delay(1);  // Wait for 1 millisecond
+}
+```
+## PWM using the Arduino API
+```c++
+// Setup instructions
+// A2 - Grove Rotary Angle Sensor
+// D3 - LED
+#define SUBPLATFORM_OFFSET            512
+#define KNOB_PIN                      SUBPLATFORM_OFFSET + 2
+#define LED_PIN                       SUBPLATFORM_OFFSET + 3
+
+// The setup function runs once when
+// you press reset or power the board.
+void setup() {
+  mraa_add_subplatform(MRAA_GROVEPI, "0");
+}
+
+// The loop function runs continuously
+void loop() {
+  analogWrite(LED_PIN, analogRead(KNOB_PIN));
   delay(1);  // Wait for 1 millisecond
 }
 ```
